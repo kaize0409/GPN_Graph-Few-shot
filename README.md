@@ -12,9 +12,9 @@ python==3.6.6
 torch==1.4.0
 
 ## Usage
-```python train_gpn.py --shot 5 --way 5 --episodes 1000 --dataset dblp --lr 0.005 --dropout 0.5  --use_cuda```
+```python train_gpn.py --shot 5 --way 5 --episodes 1000 --dataset dblp --dropout 0.5 --use_cuda```
 
-## Cite
+## Citation
 
 Please cite our paper if you use this code in your own work:
 
