@@ -3,8 +3,7 @@ Graph Prototypical Networks for Few-shot Learning on Attributed Networks (CIKM20
 
 ## Graph Prototypical Networks (GPN)
 
-This is the source code of paper "Be More with Less: Hypergraph Attention Networks for Inductive Text Classification".
-
+This is the source code of paper "Graph Prototypical Networks for Few-shot Learning on Attributed Networks".
 
 
 ## Requirements
@@ -13,18 +12,18 @@ python==3.6.6
 torch==1.4.0
 
 ## Usage
-```python run.py --dataset R52 --use_LDA --batchSize 8 --lr 0.001 --dropout 0.3 --l2 1e-6 --epoch 10```
+```python train_gpn.py --shot 5 --way 5 --episodes 1000 --dataset dblp --lr 0.005 --dropout 0.5  --use_cuda```
 
 ## Cite
 
 Please cite our paper if you use this code in your own work:
 
 ```
-@inproceedings{ding2020more,
-  title={Be More with Less: Hypergraph Attention Networks for Inductive Text Classification},
-  author={Ding, Kaize and Wang, Jianling and Li, Jundong and Li, Dingcheng and Liu, Huan},
-  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
-  pages={4927--4936},
+@inproceedings{ding2020graph,
+  title={Graph prototypical networks for few-shot learning on attributed networks},
+  author={Ding, Kaize and Wang, Jianling and Li, Jundong and Shu, Kai and Liu, Chenghao and Liu, Huan},
+  booktitle={Proceedings of the 29th ACM International Conference on Information \& Knowledge Management},
+  pages={295--304},
   year={2020}
 }
 ```
