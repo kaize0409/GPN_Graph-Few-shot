@@ -4,7 +4,7 @@ Graph Prototypical Networks for Few-shot Learning on Attributed Networks (CIKM20
 ## Graph Prototypical Networks (GPN)
 
 This is the source code of paper "Graph Prototypical Networks for Few-shot Learning on Attributed Networks".
-![The proposed framework](GPN.pdf)
+![The proposed framework](GPN.png)
 
 ## Requirements
 python==3.6.6 
