@@ -112,23 +112,16 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
 
 
 
-def task_generator(id_by_class, class_list, n_way, k_shot, n_query, is_train=True):
+def task_generator(id_by_class, class_list, n_way, k_shot, m_query):
 
-    if is_train is True:
-        class_selected = random.sample(class_list, n_way)
-    else:
-        class_selected = random.sample(class_list, n_way)
-
-    # sample support examples
+    # sample class indices
+    class_selected = random.sample(class_list, n_way)
     id_support = []
-    id_remain = []
+    id_query = []
     for cla in class_selected:
-        temp = random.sample(id_by_class[cla], k_shot)
+        temp = random.sample(id_by_class[cla], k_shot + m_query)
         id_support.extend(temp[:k_shot])
-        id_remain.extend(list(set(id_by_class[cla]).difference(set(temp))))
-
-    # sample query examples, by default number of query examples == k_shot
-    id_query = random.sample(id_remain, n_query)
+        id_query.extend(temp[k_shot:])
 
     return np.array(id_support), np.array(id_query), class_selected
 

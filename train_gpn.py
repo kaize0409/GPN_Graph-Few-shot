@@ -29,6 +29,7 @@ parser.add_argument('--dropout', type=float, default=0.5,
 
 parser.add_argument('--way', type=int, default=5, help='way.')
 parser.add_argument('--shot', type=int, default=5, help='shot.')
+parser.add_argument('--qry', type=int, help='k shot for query set', default=20)
 parser.add_argument('--dataset', default='Amazon_clothing', help='Dataset:Amazon_clothing/Amazon_eletronics/dblp')
 
 args = parser.parse_args()
@@ -156,9 +157,13 @@ if __name__ == '__main__':
 
     n_way = args.way
     k_shot = args.shot
-    n_query = 20
+    n_query = args.qry
     meta_test_num = 50
     meta_valid_num = 50
+
+    # Sampling a pool of tasks for validation/testing
+    valid_pool = [task_generator(id_by_class, class_list_valid, n_way, k_shot, n_query) for i in range(meta_valid_num)]
+    test_pool = [task_generator(id_by_class, class_list_test, n_way, k_shot, n_query) for i in range(meta_test_num)]
 
     # Train model
     t_total = time.time()
@@ -166,7 +171,7 @@ if __name__ == '__main__':
 
     for episode in range(args.episodes):
         id_support, id_query, class_selected = \
-            task_generator(id_by_class, class_list_train, n_way, k_shot, n_query, is_train=True)
+            task_generator(id_by_class, class_list_train, n_way, k_shot, n_query)
         acc_train, f1_train = train(class_selected, id_support, id_query, n_way, k_shot)
         meta_train_acc.append(acc_train)
         if episode > 0 and episode % 10 == 0:    
@@ -176,9 +181,8 @@ if __name__ == '__main__':
             # validation
             meta_test_acc = []
             meta_test_f1 = []
-            for _ in range(meta_valid_num):
-                id_support, id_query, class_selected = \
-                    task_generator(id_by_class, class_list_valid, n_way, k_shot, n_query, is_train=False)
+            for idx in range(meta_valid_num):
+                id_support, id_query, class_selected = valid_pool[idx]
                 acc_test, f1_test = test(class_selected, id_support, id_query, n_way, k_shot)
                 meta_test_acc.append(acc_test)
                 meta_test_f1.append(f1_test)
@@ -187,9 +191,8 @@ if __name__ == '__main__':
             # testing
             meta_test_acc = []
             meta_test_f1 = []
-            for _ in range(meta_test_num):
-                id_support, id_query, class_selected = \
-                    task_generator(id_by_class, class_list_test, n_way, k_shot, n_query, is_train=False)
+            for idx in range(meta_test_num):
+                id_support, id_query, class_selected = test_pool[idx]
                 acc_test, f1_test = test(class_selected, id_support, id_query, n_way, k_shot)
                 meta_test_acc.append(acc_test)
                 meta_test_f1.append(f1_test)
