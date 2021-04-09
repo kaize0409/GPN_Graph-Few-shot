@@ -93,7 +93,7 @@ def train(class_selected, id_support, id_query, n_way, k_shot):
     support_embeddings = support_embeddings * support_scores
 
     # compute loss
-    prototype_embeddings = support_embeddings.mean(1)
+    prototype_embeddings = support_embeddings.sum(1)
     dists = euclidean_dist(query_embeddings, prototype_embeddings)
     output = F.log_softmax(-dists, dim=1)
 
